@@ -7,7 +7,6 @@
 import https from "node:https";
 import { configDotenv } from "dotenv";
 import { readFileSync } from "fs";
-import path from "node:path";
 
 // Load environment variables from a .env file into process.env
 configDotenv();
@@ -24,84 +23,70 @@ configDotenv();
  * @type {ServerOptions}
  */
 const serverOptions = {
-    key: readFileSync(path.join(process.cwd(), process.env.HTTPS_KEY)),
-    cert: readFileSync(path.join(process.cwd(), process.env.HTTPS_CERT)),
+    key: readFileSync(process.env.HTTPS_KEY),
+    cert: readFileSync(process.env.HTTPS_CERT),
 };
 
 /**
- * The singleton HTTPS server instance for the application.
- * @type {import('node:https').Server}
+ * Creates and configures the HTTPS server instance.
+ * Note: This function creates the server but does not start it (i.e., it does not call `listen()`).
+ * The server should be started manually after being passed to other services like Socket.IO.
+ * @param {import('node:http').RequestListener} [routingEngine] - The request handler logic, typically an Express app or another router. If not provided, a default "Hello World" handler is used.
+ * @returns {import('node:https').Server} The configured, but not started, HTTPS server instance.
  */
-const server = https.createServer(serverOptions, (req, res) => {
-    // Basic request handler, sends a "Hello World!" response.
-    // This should be replaced with actual application routing and logic.
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end("Hello World!");
-});
+export function createHttpServer(routingEngine) {
+    const server = https.createServer(serverOptions, routingEngine ?? ((req, res) => {
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end("Hello World!"); 
+    }));
 
-/**
- * Handles critical server errors.
- * Logs a specific message for common network errors and terminates the application.
- * @param {NodeJS.ErrnoException} err - The error object.
- */
-function handleError(err) {
-    let message;
-    switch (err.code) {
-        case "EADDRINUSE":
-            message = `Error: Port ${err.port} is already in use.`;
-            break;
-        case "EACCES":
-            message = `Error: Permission denied to use port ${err.port}.`;
-            break;
-        case "EADDRNOTAVAIL":
-            message = `Error: Address ${err.address} is not available.`;
-            break;
-        case "ECONNREFUSED":
-            message = `Error: Connection refused by the server at ${err.address}:${err.port}.`;
-            break;
-        case "ECONNRESET":
-            message = `Error: Connection reset by the server at ${err.address}:${err.port}.`;
-            break;
-        default:
-            console.error("An unexpected server error occurred:", err);
-            // For unknown errors, we might not want to exit immediately,
-            // but for this application's purpose, we will.
-            process.exit(1);
-            return;
-    }
-    console.error(message);
-    process.exit(1);
-}
-
-/**
- * Gracefully shuts down the HTTP server.
- * This function is registered to be called on SIGINT and SIGTERM signals.
- */
-function shutdown() {
-    console.log("Shutting down server gracefully...");
-    server.close((err) => {
-        if (err) {
-            console.error("Error during server shutdown:", err);
-            process.exit(1);
-        } else {
-            console.log("Server has been shut down successfully.");
-            process.exit(0);
+    /**
+     * Handles critical server errors by logging a specific message and exiting the process.
+     * These are typically errors that occur during server startup or network configuration.
+     * @param {NodeJS.ErrnoException} err - The error object.
+     */
+    function handleError(err) {
+        // The `listen` call will trigger this handler for certain errors (e.g., port in use).
+        // We log a specific, helpful message and exit, as the server cannot run.
+        let message;
+        switch (err.code) {
+            case "EADDRINUSE":
+                message = `Error: Port ${err.port} is already in use. Please close the other process or choose a different port.`;
+                break;
+            case "EACCES":
+                message = `Error: Permission denied to use port ${err.port}. Try running with sudo or using a port > 1024.`;
+                break;
+            default:
+                // For other critical errors, we log the full error and exit.
+                console.error("A critical server error occurred:", err);
+                process.exit(1);
+                return; // Exit immediately
         }
-    });
+        console.error(message);
+        process.exit(1);
+    }
+
+    /**
+     * Gracefully shuts down the HTTP server.
+     */
+    function shutdown() {
+        console.log("Shutting down server gracefully...");
+        server.close((err) => {
+            if (err) {
+                console.error("Error during server shutdown:", err);
+                process.exit(1);
+            } else {
+                console.log("Server has been shut down successfully.");
+                process.exit(0);
+            }
+        });
+    }
+
+    server.on("error", handleError);
+    server.on("close", () => console.log("HTTP Server instance closed."));
+
+    process.on("SIGINT", shutdown);
+    process.on("SIGTERM", shutdown);
+
+    return server;
 }
-
-server.on("error", handleError);
-server.on("close", () => console.log("HTTP Server instance closed."));
-
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
-
-/**
- * Starts the HTTP server and makes it listen on a specified port.
- * @param {number} port - The port number for the server to listen on.
- * @param {(port: number) => void} onListen - A callback function executed when the server starts listening. It receives the port number as an argument.
- * @returns {import('node:https').Server} The running HTTP server instance.
- */
-export const runHttpServer = (port, onListen) => {
-    return server.listen(port, () => onListen(port));
-};
