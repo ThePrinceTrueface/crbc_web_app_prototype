@@ -102,6 +102,6 @@ process.on("SIGTERM", shutdown);
  * @param {(port: number) => void} onListen - A callback function executed when the server starts listening. It receives the port number as an argument.
  * @returns {import('node:https').Server} The running HTTP server instance.
  */
-export const runServer = (port, onListen) => {
+export const runHttpServer = (port, onListen) => {
     return server.listen(port, () => onListen(port));
 };
