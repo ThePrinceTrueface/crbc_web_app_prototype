@@ -90,4 +90,5 @@ logs
 pm2.log
 
 # user
+/certs
 *.local.*
