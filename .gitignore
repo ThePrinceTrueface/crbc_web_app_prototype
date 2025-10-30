@@ -1,0 +1,93 @@
+# -----------------------------------------------------------------------------
+# Fichiers et dossiers générés par Node/npm
+# -----------------------------------------------------------------------------
+
+# Dépendances du projet (essentielles à ignorer)
+/node_modules
+
+# Fichiers de logs de npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-cache
+
+# Fichiers de build/distribution
+/dist
+/build
+/out
+/coverage
+
+# Variables d'environnement sensibles (CRITIQUE pour la sécurité)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Fichiers de configuration de Node.js
+*.tgz
+.DS_Store
+
+# Fichiers temporaires ou de compilation
+*.log
+*.pid
+*.seed
+*.lock
+
+# -----------------------------------------------------------------------------
+# IDEs (Environnements de Développement Intégré)
+# -----------------------------------------------------------------------------
+
+## 🖥️ VS Code (Visual Studio Code)
+.vscode/*
+!/.vscode/settings.json    # Optionnel: Conserver les settings de projet spécifiques
+!/.vscode/tasks.json       # Optionnel: Conserver les tâches spécifiques
+!/.vscode/launch.json      # Optionnel: Conserver les configurations de debug
+!/.vscode/extensions.json  # Optionnel: Conserver les extensions recommandées
+
+## 💡 WebStorm / IntelliJ (famille JetBrains)
+# https://www.jetbrains.com/help/idea/ignoring-files.html
+.idea/
+*.iws
+*.iml
+*.ipr
+/webstorm.iml
+/webstorm.js
+
+# Fichiers locaux créés par l'utilisateur JetBrains
+# Ces fichiers contiennent des chemins absolus vers des dossiers
+# Il faut les ignorer pour éviter des conflits et fuites d'infos locales
+*.iml
+.idea/dataSources/
+.idea/dataSources.local.xml
+
+# -----------------------------------------------------------------------------
+# Autres Normes de Développement (OS, Tests, etc.)
+# -----------------------------------------------------------------------------
+
+## 🍎 macOS
+.DS_Store
+.Trashes
+ehthumbs.db
+
+## 🪟 Windows
+Thumbs.db
+Desktop.ini
+
+## 🧪 Fichiers de Test/Couverture
+/coverage
+
+## 📜 Fichiers générés par Babel/TypeScript
+# Si vous utilisez un transpileur
+/lib
+/es
+*.tsbuildinfo
+
+## 📦 PM2
+logs
+.pm2
+pm2.log
+
+# user
+*.local.*
