@@ -1,6 +1,7 @@
 import { createHttpServer } from "./server/http.js";
 import { configDotenv } from "dotenv";
 import { runSocketServer } from "./server/socket.js";
+import app from "./app/app.js"
 
 // Load environment variables
 configDotenv();
@@ -8,7 +9,7 @@ configDotenv();
 const PORT = process.env.PORT || 3001;
 
 // 1. Create the HTTP server instance (without starting it).
-const httpServer = createHttpServer();
+const httpServer = createHttpServer(app);
 
 // 2. Create the Socket.IO server and attach it to the HTTP server.
 const io = runSocketServer(httpServer);
