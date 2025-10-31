@@ -4,6 +4,8 @@
  */
 
 import { Server as SocketIoServer } from "socket.io";
+import {configDotenv} from "dotenv"
+configDotenv()
 
 /**
  * Initializes and runs the Socket.IO server.
@@ -17,7 +19,7 @@ export function runSocketServer(httpServer) {
                 // WARNING: Using "*" for origin in production is a security risk.
                 // It allows any domain to connect. For production, replace with specific client URLs.
                 // Example: origin: process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',') : [],
-                origin: process.env.CLIENT_URL || "*",
+                origin: process.env.CLIENT_URL?.split(","),
                 methods: ["GET", "POST"]
             }
         }
