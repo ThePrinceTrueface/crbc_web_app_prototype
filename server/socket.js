@@ -4,21 +4,17 @@
  */
 
 import { Server as SocketIoServer } from "socket.io";
-import {configDotenv} from "dotenv"
-configDotenv()
 
 /**
- * Initializes and runs the Socket.IO server.
+ * Creates and configures the Socket.IO server instance.
  * @param {import('node:http').Server} httpServer - The HTTP server instance to attach Socket.IO to.
- * @returns {SocketIoServer} The initialized Socket.IO server instance.
+ * @returns {SocketIoServer} The configured Socket.IO server instance.
  */
-export function runSocketServer(httpServer) {
+export function createSocketServer(httpServer) {
 
     const io = new SocketIoServer(httpServer, {
             cors: {
-                // WARNING: Using "*" for origin in production is a security risk.
-                // It allows any domain to connect. For production, replace with specific client URLs.
-                // Example: origin: process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',') : [],
+                // Use a specific allowlist of origins from environment variables for security.
                 origin: process.env.CLIENT_URL?.split(","),
                 methods: ["GET", "POST"]
             }
@@ -28,7 +24,6 @@ export function runSocketServer(httpServer) {
     io.on("connection", socket => {
         console.log(`Client connected: ${socket.id}`);
 
-        // Basic error handling for the socket connection
         socket.on("error", (err) => {
             console.error(`Socket error for client ${socket.id}:`, err);
         });
@@ -38,19 +33,8 @@ export function runSocketServer(httpServer) {
         });
 
         // TODO: Implement authentication and authorization for connected clients.
-        // For example, verify a JWT token passed during handshake:
-        // socket.use((packet, next) => {
-        //   if (isValidToken(socket.handshake.auth.token)) {
-        //     next();
-        //   } else {
-        //     next(new Error('Authentication error'));
-        //   }
-        // });
-
-        // TODO: Add more event listeners and business logic here.
     });
 
-    // Global error handling for the Socket.IO server itself
     io.on("error", (err) => {
         console.error("Socket.IO server error:", err);
     });
