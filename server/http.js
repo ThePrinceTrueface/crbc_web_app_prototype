@@ -1,9 +1,10 @@
 /**
- * @file This file is responsible for creating, configuring, and managing the lifecycle of the application's HTTPS server.
+ * @file This file is responsible for creating, configuring, and managing the lifecycle of the application's HTTP/HTTPS server.
  * It includes server instantiation, error handling, and graceful shutdown procedures.
  * @module server/http
  */
 
+import http from "node:http";
 import https from "node:https";
 import { configDotenv } from "dotenv";
 import { readFileSync } from "fs";
@@ -12,78 +13,65 @@ import { readFileSync } from "fs";
 configDotenv();
 
 /**
- * @typedef {object} ServerOptions
- * @property {Buffer} key - The private key for the SSL certificate.
- * @property {Buffer} cert - The public certificate.
- */
-
-let serverOptions;
-
-try {
-    /**
-     * Configuration options for the HTTPS server.
-     * Reads the SSL key and certificate from paths specified in environment variables.
-     * @type {ServerOptions}
-     */
-    serverOptions = {
-        key: readFileSync(process.env.HTTPS_KEY),
-        cert: readFileSync(process.env.HTTPS_CERT),
-    };
-} catch (err) {
-    console.error("\n--- CRITICAL ERROR: FAILED TO READ SSL CERTIFICATES ---");
-    console.error(`Error details: ${err.message}`);
-    console.error("Please check the following:");
-    console.error(`1. Ensure the paths in your .env file for HTTPS_KEY and HTTPS_CERT are correct.`);
-    console.error(`   - HTTPS_KEY path: ${process.env.HTTPS_KEY}`);
-    console.error(`   - HTTPS_CERT path: ${process.env.HTTPS_CERT}`);
-    console.error("2. Ensure the files exist at these locations.");
-    console.error("3. Ensure the application has the necessary permissions to read these files.");
-    console.error("----------------------------------------------------------\n");
-    //process.exit(1); // Exit the process with an error code
-}
-
-
-/**
- * Creates and configures the HTTPS server instance.
- * Note: This function creates the server but does not start it (i.e., it does not call `listen()`).
- * The server should be started manually after being passed to other services like Socket.IO.
- * @param {import('node:http').RequestListener} [routingEngine] - The request handler logic, typically an Express app or another router. If not provided, a default "Hello World" handler is used.
- * @returns {import('node:https').Server} The configured, but not started, HTTPS server instance.
+ * Creates and configures the HTTP or HTTPS server instance based on the environment.
+ * In a production environment like Render (where RENDER=true), it creates a simple HTTP server.
+ * In development, it creates an HTTPS server using SSL certificates specified in .env.
+ * @param {import('node:http').RequestListener} [routingEngine] - The request handler logic, typically an Express app.
+ * @returns {import('node:http').Server | import('node:https').Server} The configured, but not started, server instance.
  */
 export function createHttpServer(routingEngine) {
-    const server = https.createServer(serverOptions, routingEngine ?? ((req, res) => {
+    let server;
+
+    const defaultHandler = (req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end("Hello World!"); 
-    }));
+        res.end("Hello World!");
+    };
+
+    if (process.env.NO_HTTPS === 'true') {
+        console.log("Render environment detected. Creating HTTP server.");
+        server = http.createServer(routingEngine ?? defaultHandler);
+    } else {
+        console.log("Development environment detected. Creating HTTPS server.");
+        let serverOptions;
+        try {
+            serverOptions = {
+                key: readFileSync(process.env.HTTPS_KEY),
+                cert: readFileSync(process.env.HTTPS_CERT),
+            };
+        } catch (err) {
+            console.error("\n--- CRITICAL ERROR: FAILED TO READ SSL CERTIFICATES ---");
+            console.error(`Error details: ${err.message}`);
+            console.error("Please check your .env file and ensure HTTPS_KEY and HTTPS_CERT point to valid files.");
+            console.error("----------------------------------------------------------\n");
+            process.exit(1);
+        }
+        server = https.createServer(serverOptions, routingEngine ?? defaultHandler);
+    }
 
     /**
-     * Handles critical server errors by logging a specific message and exiting the process.
-     * These are typically errors that occur during server startup or network configuration.
+     * Handles critical server errors.
      * @param {NodeJS.ErrnoException} err - The error object.
      */
     function handleError(err) {
-        // The `listen` call will trigger this handler for certain errors (e.g., port in use).
-        // We log a specific, helpful message and exit, as the server cannot run.
         let message;
         switch (err.code) {
             case "EADDRINUSE":
-                message = `Error: Port ${err.port} is already in use. Please close the other process or choose a different port.`;
+                message = `Error: Port ${err.port} is already in use.`;
                 break;
             case "EACCES":
-                message = `Error: Permission denied to use port ${err.port}. Try running with sudo or using a port > 1024.`;
+                message = `Error: Permission denied to use port ${err.port}.`;
                 break;
             default:
-                // For other critical errors, we log the full error and exit.
                 console.error("A critical server error occurred:", err);
                 process.exit(1);
-                return; // Exit immediately
+                return;
         }
         console.error(message);
         process.exit(1);
     }
 
     /**
-     * Gracefully shuts down the HTTP server.
+     * Gracefully shuts down the server.
      */
     function shutdown() {
         console.log("Shutting down server gracefully...");
@@ -99,7 +87,7 @@ export function createHttpServer(routingEngine) {
     }
 
     server.on("error", handleError);
-    server.on("close", () => console.log("HTTP Server instance closed."));
+    server.on("close", () => console.log("Server instance closed."));
 
     process.on("SIGINT", shutdown);
     process.on("SIGTERM", shutdown);
