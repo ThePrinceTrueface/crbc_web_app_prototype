@@ -34,7 +34,7 @@
 
         <!-- Search Section -->
         <div class="search-section">
-            <form class="search-container" onsubmit="handleSearch(event)">
+            <form class="search-container" id="searchForm">
                 <input
                         type="text"
                         class="search-input"
@@ -49,6 +49,7 @@
         </div>
 
         <!-- Quick Links -->
+        <%# TODO: Generate these links from a route configuration object passed from the server %>
         <div class="quick-links">
             <a href="/" class="quick-link-card">
                 <div class="quick-link-icon">
