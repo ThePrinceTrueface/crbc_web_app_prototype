@@ -17,15 +17,31 @@ configDotenv();
  * @property {Buffer} cert - The public certificate.
  */
 
-/**
- * Configuration options for the HTTPS server.
- * Reads the SSL key and certificate from paths specified in environment variables.
- * @type {ServerOptions}
- */
-const serverOptions = {
-    key: readFileSync(process.env.HTTPS_KEY),
-    cert: readFileSync(process.env.HTTPS_CERT),
-};
+let serverOptions;
+
+try {
+    /**
+     * Configuration options for the HTTPS server.
+     * Reads the SSL key and certificate from paths specified in environment variables.
+     * @type {ServerOptions}
+     */
+    serverOptions = {
+        key: readFileSync(process.env.HTTPS_KEY),
+        cert: readFileSync(process.env.HTTPS_CERT),
+    };
+} catch (err) {
+    console.error("\n--- CRITICAL ERROR: FAILED TO READ SSL CERTIFICATES ---");
+    console.error(`Error details: ${err.message}`);
+    console.error("Please check the following:");
+    console.error(`1. Ensure the paths in your .env file for HTTPS_KEY and HTTPS_CERT are correct.`);
+    console.error(`   - HTTPS_KEY path: ${process.env.HTTPS_KEY}`);
+    console.error(`   - HTTPS_CERT path: ${process.env.HTTPS_CERT}`);
+    console.error("2. Ensure the files exist at these locations.");
+    console.error("3. Ensure the application has the necessary permissions to read these files.");
+    console.error("----------------------------------------------------------\n");
+    process.exit(1); // Exit the process with an error code
+}
+
 
 /**
  * Creates and configures the HTTPS server instance.
