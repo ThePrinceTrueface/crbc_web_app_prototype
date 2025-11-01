@@ -9,11 +9,11 @@
         </div>
         <nav>
             <ul>
-                <li><a class="active" href="#home">Accueil</a></li>
-                <li><a href="#about">À propos</a></li>
-                <li><a href="#features">Services</a></li>
-                <li><a href="#testimonials">Témoignages</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="/" class="<%= activePage === 'home' ? 'active' : '' %>">Accueil</a></li>
+                <li><a href="/about" class="<%= activePage === 'about' ? 'active' : '' %>">À propos</a></li>
+                <li><a href="/services" class="<%= activePage === 'services' ? 'active' : '' %>">Services</a></li>
+                <li><a href="#testimonials" class="<%= activePage === 'testimonials' ? 'active' : '' %>">Témoignages</a></li>
+                <li><a href="/contact" class="<%= activePage === 'contact' ? 'active' : '' %>">Contact</a></li>
             </ul>
         </nav>
         <button class="cta-button">Rejoindre la communauté</button>
@@ -37,11 +37,11 @@
         <div class="mobile-menu-close" id="mobileMenuClose"><i class="fas fa-times"></i></div>
     </div>
     <ul>
-        <li><a href="#home">Accueil</a></li>
-        <li><a href="#about">À propos</a></li>
-        <li><a href="#features">Services</a></li>
-        <li><a href="#testimonials">Témoignages</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="/" class="<%= activePage === 'home' ? 'active' : '' %>">Accueil</a></li>
+        <li><a href="/about" class="<%= activePage === 'about' ? 'active' : '' %>">À propos</a></li>
+        <li><a href="/services" class="<%= activePage === 'services' ? 'active' : '' %>">Services</a></li>
+        <li><a href="#testimonials" class="<%= activePage === 'testimonials' ? 'active' : '' %>">Témoignages</a></li>
+        <li><a href="/contact" class="<%= activePage === 'contact' ? 'active' : '' %>">Contact</a></li>
     </ul>
     <div class="mobile-menu-cta"><button class="cta-button" style="width: 100%;">Rejoindre la communauté</button></div>
 </div>

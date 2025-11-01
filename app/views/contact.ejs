@@ -1,0 +1,270 @@
+<link rel="stylesheet" href="/assets/styles/contact.style.css">
+<script src="/assets/scripts/contact.script.js"></script>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+        <div class="breadcrumb">
+            <a href="/">Accueil</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>Contact</span>
+        </div>
+        <h1 class="hero-title">Restons en contact</h1>
+        <p class="hero-subtitle">Nous serions ravis de vous entendre. Que ce soit pour une question, une prière ou simplement pour échanger, n'hésitez pas à nous contacter.</p>
+    </div>
+</section>
+
+<!-- Contact Main Content -->
+<div class="contact-main">
+    <div class="container">
+        <div class="contact-grid">
+            <!-- Contact Form Section -->
+            <div class="contact-form-section fade-in">
+                <h2 class="section-title">Envoyez-nous un message</h2>
+                <p class="section-subtitle">Nous vous répondrons dans les plus brefs délais</p>
+
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Votre message a été envoyé avec succès !</span>
+                </div>
+
+                <div class="error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Une erreur est survenue. Veuillez réessayer.</span>
+                </div>
+
+                <form class="contact-form" id="contactForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Nom complet <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                Email <span class="required">*</span>
+                            </label>
+                            <input type="email" class="form-input" id="email" name="email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Téléphone
+                            </label>
+                            <input type="tel" class="form-input" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                Sujet <span class="required">*</span>
+                            </label>
+                            <select class="form-select" id="subject" name="subject" required>
+                                <option value="">Choisissez un sujet</option>
+                                <option value="information">Demande d'information</option>
+                                <option value="prayer">Demande de prière</option>
+                                <option value="visite">Visite de l'église</option>
+                                <option value="partenariat">Partenariat</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            Message <span class="required">*</span>
+                        </label>
+                        <textarea class="form-textarea" id="message" name="message" required placeholder="Écrivez votre message ici..."></textarea>
+                    </div>
+
+                    <button type="submit" class="form-submit" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i>
+                        Envoyer le message
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Info Section -->
+            <div class="contact-info-section fade-in">
+                <h2 class="section-title">Informations de contact</h2>
+                <p class="section-subtitle">Plusieurs façons de nous joindre</p>
+
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="info-title">Adresse</h3>
+                    <div class="info-content">
+                        <p>123 Qrt Tié-Tié Avn Moulembo</p>
+                        <p>Pointe-Noire, Brazzaville</p>
+                        <p>Congo Brazzaville</p>
+                        <a href="https://maps.app.goo.gl/qSphtPf1LoHFH4xbA" class="info-link">
+                            <i class="fas fa-directions"></i> Obtenir l'itinéraire
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3 class="info-title">Téléphone</h3>
+                    <div class="info-content">
+                        <p><a href="tel:+22912345678" class="info-link">+242 06 5577 723</a></p>
+                        <p><a href="tel:+22998765432" class="info-link">+242 05 0334 147</a></p>
+                        <p>Lun-Ven: 8h-18h | Sam: 9h-14h</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3 class="info-title">Email</h3>
+                    <div class="info-content">
+                        <p><a href="mailto:contact@crbc.org" class="info-link">contact@crbc.org</a></p>
+                        <p><a href="mailto:info@crbc.org" class="info-link">info@crbc.org</a></p>
+                        <p>Réponse sous 24h</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="info-title">Heures de bureau</h3>
+                    <div class="info-content">
+                        <p><strong>Lundi - Vendredi:</strong> 8h00 - 18h00</p>
+                        <p><strong>Samedi:</strong> 9h00 - 14h00</p>
+                        <p><strong>Dimanche:</strong> Culte à 9h00 & 11h00</p>
+                        <p><strong>Urgences:</strong> Disponible 24/7</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Section -->
+        <section class="map-section fade-in">
+            <div class="section-header">
+                <h2 class="section-title">Nous trouver</h2>
+                <p class="section-subtitle">Facilement accessible en transport en commun</p>
+            </div>
+
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <div class="map-overlay">
+                        <div class="map-content">
+                            <h3 class="map-title">Centre CRBC </h3>
+                            <p class="map-address">123 Qrt Tié-Tié Avn Moulembo, Pointe-Noire, Congo Brazzaville</p>
+                            <a href="#" class="map-button">
+                                <i class="fas fa-map-marked-alt"></i>
+                                Voir sur Google Maps
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section fade-in">
+            <div class="section-header">
+                <h2 class="section-title">Questions fréquentes</h2>
+                <p class="section-subtitle">Réponses aux questions les plus courantes</p>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Quels sont les horaires des cultes ?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Nous avons deux cultes le dimanche : un culte matinal à 9h00 et un culte principal à 11h00. Le mercredi soir, nous avons une réunion de prière à 18h30.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Comment devenir membre de la CRBC ?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Pour devenir membre, vous pouvez assister à nos cours de découverte qui ont lieu le premier samedi de chaque mois. Vous pouvez également nous contacter directement pour plus d'informations.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Y a-t-il des activités pour les enfants ?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Oui ! Nous avons des programmes spécifiques pour chaque tranche d'âge : les bébés (0-2 ans), les tout-petits (3-5 ans), les enfants (6-11 ans) et les adolescents (12-17 ans).
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Comment puis-je faire un don ?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Vous pouvez faire un don en ligne via notre site sécurisé, par virement bancaire, ou directement à l'église. Tous les dons sont utilisés pour soutenir nos ministères et actions communautaires.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Y a-t-il un parking disponible ?</span>
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Oui, nous disposons d'un parking gratuit avec plus de 100 places. Il est accessible par l'avenue principale et est surveillé pendant les heures de culte.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Section -->
+        <section class="social-section fade-in">
+            <div class="social-content">
+                <h2 class="social-title">Suivez-nous sur les réseaux sociaux</h2>
+                <p class="social-subtitle">Restez connecté avec notre communauté au quotidien</p>
+
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
