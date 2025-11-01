@@ -6,12 +6,19 @@
     <title><%= title %></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/assets/styles/index.style.css">
+    
+    <%# This block will render only if a view defines styles %>
+    <%- locals.style %>
 </head>
 <body>
 
-    <%- include('../partials/loader') %>
+    <% if(!locals.noLoader) { %>
+        <%- include('../partials/loader') %>
+    <% } %>
 
-    <%- include('../partials/header') %>
+    <% if(!locals.noHeader) { %>
+        <%- include('../partials/header') %>
+    <% }%>
 
     <main>
         <%- body %>
@@ -20,5 +27,8 @@
     <%- include('../partials/footer') %>
 
     <script src="/assets/scripts/index.script.js"></script>
+
+    <%# This block will render only if a view defines scripts %>
+    <%- locals.script %>
 </body>
 </html>

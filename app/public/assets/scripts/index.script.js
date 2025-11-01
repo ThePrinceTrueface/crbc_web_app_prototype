@@ -3,7 +3,7 @@ window.addEventListener('load', () => {
     // Simuler un temps de chargement minimum pour l'effet visuel
     setTimeout(() => {
         const loaderScreen = document.getElementById('loaderScreen');
-        loaderScreen.classList.add('hidden');
+        loaderScreen && loaderScreen.classList.add('hidden');
 
         // Démarrer les animations après la disparition du loader
         startPageAnimations();

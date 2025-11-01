@@ -23,6 +23,8 @@ app.use(expressLayouts);
 app.set('layout', 'layout/main'); // Set the default layout file
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.set('layout extractScripts', true);
+app.set('layout extractStyles', true);
 
 
 // --- Middleware Configuration (Order is crucial for security and performance) ---
@@ -36,7 +38,7 @@ const apiLimiter = rateLimit({
     max: 100, // Limit each IP to 100 requests per windowMs
     standardHeaders: true,
     legacyHeaders: false,
-    message: {error: true, status: "blocked", message: "Too many requests from this IP, please try again after 15 minutes."},
+    message: "Too many requests from this IP, please try again after 15 minutes.",
 });
 app.use(apiLimiter);
 
@@ -77,6 +79,13 @@ app.get("/", (req, res) => {
 // --- API Routes ---
 // TODO: Add API-specific routes here.
 // Example: app.use("/api/users", userRoutes);
+
+
+// --- 404 Handler ---
+// This middleware should be the last one to catch all unhandled requests.
+app.use((req, res, next) => {
+    res.status(404).render('404', { title: 'Page non trouvée', noLoader: true });
+});
 
 
 export default app;
