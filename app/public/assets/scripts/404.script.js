@@ -116,10 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('404 Error: Page not found -', window.location.href);
 
     // Auto-focus search input for better UX
-    const searchInput = document.getElementById('searchInput');
+    /*const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         setTimeout(() => {
             searchInput.focus();
         }, 1000);
-    }
+    }*/
 });
