@@ -39,7 +39,7 @@ try {
     console.error("2. Ensure the files exist at these locations.");
     console.error("3. Ensure the application has the necessary permissions to read these files.");
     console.error("----------------------------------------------------------\n");
-    process.exit(1); // Exit the process with an error code
+    //process.exit(1); // Exit the process with an error code
 }
 
 
