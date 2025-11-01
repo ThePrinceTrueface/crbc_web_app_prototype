@@ -23,6 +23,9 @@ importers:
       express-ejs-layouts:
         specifier: ^2.5.1
         version: 2.5.1
+      express-mongo-sanitize:
+        specifier: ^2.2.0
+        version: 2.2.0
       express-rate-limit:
         specifier: ^8.2.0
         version: 8.2.0(express@5.1.0)
@@ -243,6 +246,10 @@ packages:
 
   express-ejs-layouts@2.5.1:
     resolution: {integrity: sha512-IXROv9n3xKga7FowT06n1Qn927JR8ZWDn5Dc9CJQoiiaaDqbhW5PDmWShzbpAa2wjWT1vJqaIM1S6vJwwX11gA==}
+
+  express-mongo-sanitize@2.2.0:
+    resolution: {integrity: sha512-PZBs5nwhD6ek9ZuP+W2xmpvcrHwXZxD5GdieX2dsjPbAbH4azOkrHbycBud2QRU+YQF1CT+pki/lZGedHgo/dQ==}
+    engines: {node: '>=10'}
 
   express-rate-limit@8.2.0:
     resolution: {integrity: sha512-zDLb8RsXoA09dui1mvm/bAqSYeUh/bj3+fcDeiNBebSbSjl9IEK5mbCSYSRk52Lrco9sj9Xjuzkot3TXuXEw0A==}
@@ -811,6 +818,8 @@ snapshots:
   etag@1.8.1: {}
 
   express-ejs-layouts@2.5.1: {}
+
+  express-mongo-sanitize@2.2.0: {}
 
   express-rate-limit@8.2.0(express@5.1.0):
     dependencies:
