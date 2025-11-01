@@ -54,9 +54,10 @@ app.use(cors({
     credentials: true,
 }));
 
-// 5. Body Parsers.
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// 5. Body Parsers with Payload Size Limit.
+// Protects against DoS attacks by limiting the size of incoming request bodies.
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(express.json({ limit: '10kb' }));
 
 // 6. Data Sanitization.
 app.use(hpp());
@@ -65,7 +66,11 @@ app.use(hpp());
 // app.use(mongoSanitize());
 
 
-// --- Page Rendering Routes ---
+// --- Route Definitions ---
+// TODO: For a larger application, move routes into a separate 'routes' directory.
+// Example: 
+// import pageRoutes from './routes/pages.js';
+// app.use('/', pageRoutes);
 
 /**
  * @route GET /
@@ -76,16 +81,20 @@ app.get("/", (req, res) => {
     res.render('index', { title: 'CRBC - Accueil' });
 });
 
-// --- API Routes ---
-// TODO: Add API-specific routes here.
-// Example: app.use("/api/users", userRoutes);
+// --- Error Handling ---
 
-
-// --- 404 Handler ---
-// This middleware should be the last one to catch all unhandled requests.
+// 404 Handler: This should be the last route handler.
 app.use((req, res, next) => {
     res.status(404).render('404', { title: 'Page non trouvée', noLoader: true });
 });
+
+// TODO: Implement a global error handler for 500-level errors.
+// It should be the very last middleware.
+// Example:
+// app.use((err, req, res, next) => {
+//     console.error(err.stack);
+//     res.status(500).render('500', { title: 'Erreur Serveur' });
+// });
 
 
 export default app;
