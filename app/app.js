@@ -11,6 +11,7 @@ import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import hpp from "hpp";
 import expressLayouts from 'express-ejs-layouts';
+import router from "./router/router.js";
 
 // Using import.meta.dirname for ES module compatibility to get the current directory path.
 const __dirname = import.meta.dirname;
@@ -29,8 +30,15 @@ app.set('layout extractStyles', true);
 
 // --- Middleware Configuration (Order is crucial for security and performance) ---
 
-// 1. Apply basic security headers.
-app.use(helmet());
+// 1. Apply security headers with Helmet, allowing Google Maps frames.
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+            "frame-src": ["'self'", "https://www.google.com"],
+        },
+    })
+);
 
 // 2. Apply rate limiting to all requests to prevent abuse.
 const apiLimiter = rateLimit({
@@ -55,7 +63,6 @@ app.use(cors({
 }));
 
 // 5. Body Parsers with Payload Size Limit.
-// Protects against DoS attacks by limiting the size of incoming request bodies.
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(express.json({ limit: '10kb' }));
 
@@ -66,35 +73,31 @@ app.use(hpp());
 // app.use(mongoSanitize());
 
 
-// --- Route Definitions ---
-// TODO: For a larger application, move routes into a separate 'routes' directory.
-// Example: 
-// import pageRoutes from './routes/pages.js';
-// app.use('/', pageRoutes);
+// --- Main Router ---
+app.use("/", router);
 
-/**
- * @route GET /
- * @description Renders the homepage using the main layout.
- * @access Public
- */
-app.get("/", (req, res) => {
-    res.render('index', { title: 'CRBC - Accueil' });
-});
 
 // --- Error Handling ---
 
 // 404 Handler: This should be the last route handler.
 app.use((req, res, next) => {
-    res.status(404).render('404', { title: 'Page non trouvée', noLoader: true });
+    res.status(404).render('404', { 
+        title: 'Page non trouvée', 
+        noLoader: true,
+        activePage: '' // No active page for 404
+    });
 });
 
-// TODO: Implement a global error handler for 500-level errors.
-// It should be the very last middleware.
-// Example:
-// app.use((err, req, res, next) => {
-//     console.error(err.stack);
-//     res.status(500).render('500', { title: 'Erreur Serveur' });
-// });
+// Global Error Handler: This must be the last middleware and have 4 arguments.
+app.use((err, req, res, next) => {
+    console.error('UNHANDLED ERROR:', err.stack);
+    res.status(500).render('500', {
+        title: 'Erreur Serveur',
+        noLoader: true,
+        noHeader: true, // Optionally hide header/footer on critical error pages
+        activePage: ''
+    });
+});
 
 
 export default app;
